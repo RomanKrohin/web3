@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+ 
+<h:head>
+    <title>TablePage</title>
+</h:head>
+<h:body>
+    <h:form id="addNewResultForm">
+        <p:growl id="growl" showDetail="true"/>
+
+
+        <h:commandButton value="Return" action="mainPage" />
+
+        
+        <h:inputText id="x_value" value="#{resultsBean.newResult.x}"/>
+        
+        
+        <h:panelGrid columns="1" style="margin-bottom: 10px">
+            <p:inputText id="y_value" value="#{resultsBean.newResult.y}"/>
+            <p:slider for="y_value" range="false" minValue="-5" maxValue="5" step="1" />
+        </h:panelGrid>
+
+
+        <h:selectOneMenu id="r_value" value="#{resultsBean.newResult.r}">
+            <f:selectItem itemLabel="1" itemValue="1" />
+            <f:selectItem itemLabel="2" itemValue="2" />
+            <f:selectItem itemLabel="3" itemValue="3" />
+            <f:selectItem itemLabel="4" itemValue="4" />
+            <f:selectItem itemLabel="5" itemValue="5" />
+        </h:selectOneMenu>
+
+        <h:commandButton value="Send" action="#{resultsBean.addNewReult()}">
+            <f:ajax execute="addNewResultForm" render="resultsTable" />
+        </h:commandButton>
+
+        <div id="graph">
+            <svg
+            height="400"
+            width="400"
+            xmlns="http://www.w3.org/2000/svg"
+            id="svg"
+            class="no-select">
+            <line stroke="black"
+                x1="50"
+                x2="350"
+                y1="200"
+                y2="200"
+            ></line>
+            <line stroke="black"
+                x1="200"
+                x2="200"
+                y1="50"
+                y2="350"
+            ></line>
+            <line stroke="black"
+                x1="250"
+                x2="250"
+                y1="205"
+                y2="195"
+            ></line>
+            <line stroke="black"
+                x1="300"
+                x2="300"
+                y1="205"
+                y2="195"
+            />
+            <line stroke="black"
+            x1="100"
+            x2="100"
+            y1="205"
+            y2="195"
+            />
+            <line stroke="black"
+                x1="150"
+                x2="150"
+                y1="205"
+                y2="195"
+            />
+
+            <line stroke="black"
+                x1="195"
+                x2="205"
+                y1="150"
+                y2="150"
+            />
+            <line stroke="black"
+                x1="195"
+                x2="205"
+                y1="100"
+                y2="100"
+            />
+
+            <line stroke="black"
+                x1="195"
+                x2="205"
+                y1="250"
+                y2="250"
+            />
+            <line stroke="black"
+                x1="195"
+                x2="205"
+                y1="300"
+                y2="300"
+            />
+
+
+            <text fill="black"
+                x="245"
+                y="190"
+            >
+            </text>
+            <text fill="black"
+                x="298"
+                y="190"
+            >
+            </text>
+
+            <text fill="black"
+                x="90"
+                y="190"
+            >
+            </text>
+            <text fill="black"
+                x="140"
+                y="190"
+            >
+            </text>
+
+            <text fill="black"
+                x="210"
+                y="155"
+            >
+            </text>
+            <text fill="black"
+                x="210"
+                y="105"
+            >
+            </text>
+
+            <text fill="black"
+                x="210"
+                y="255"
+            >
+            </text>
+            <text fill="black"
+                x="210"
+                y="305"
+            >
+            </text>
+            <polygon points="360,200 350,195 350,205" fill="black" />
+            <polygon points="200,40 195,50 205,50" fill="black" />
+            <text fill="black"
+                x="210"
+                y="60"
+            >Y
+            </text>
+            <text fill="black"
+                x="340"
+                y="190"
+            >X
+            </text>
+            <path d="M200 200 L250 200 L250 100 L200 100 Z"
+                fill="blue"
+                fill-opacity="0.1"
+                stroke="blue"
+            ></path>
+            <path d="M200,200 L200,100 A100,100 0 0,0 100,200 Z" 
+                fill="blue"
+                fill-opacity="0.1"
+                stroke="blue"/>
+            <path d="M200 200 L200 300 L100 200 Z"
+                fill="blue"
+                fill-opacity="0.1"
+                stroke="blue"
+            ></path>
+            </svg>
+        </div>
+    </h:form>
+    <h:panelGroup id="resultsTable">
+        <h:dataTable value="#{resultsBean.results}" var="result">
+            <h:column>
+                <f:facet name="header">X</f:facet>
+                #{result.x}
+            </h:column>
+ 
+            <h:column>
+                <f:facet name="header">Y</f:facet>
+                #{result.y}
+            </h:column>
+ 
+            <h:column>
+                <f:facet name="header">R</f:facet>
+                #{result.r}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Value</f:facet>
+                #{result.value}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Execute time</f:facet>
+                #{result.execTime}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Time</f:facet>
+                #{result.time}
+            </h:column>
+        </h:dataTable>
+    </h:panelGroup>
+</h:body>
+</html>
