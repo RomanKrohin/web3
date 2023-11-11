@@ -7,6 +7,28 @@
 <h:head>
     <script src="../js/HomePage.js"></script>
     <title>Home</title>
+    <style>
+        html, body {
+            background-color: #ffffff;
+            color: #000000;
+            text-align: center;
+        }
+        
+        div {
+            margin-top: 100px;
+        }
+        
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        #clock {
+            font-size: 20px;
+        }
+        
+    </style>
 </h:head>
 <h:body onload="displayTime()">
 <div>
@@ -15,7 +37,12 @@
     </label>
     <label id="clock"></label>
     <h:form>
-        <h:commandButton value="Start" action="tablePage" />
+        <h:commandButton value="Start" action="tablePage" id="button" style="background-color: #000000;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;"/>
     </h:form>
 </div>
 </h:body>

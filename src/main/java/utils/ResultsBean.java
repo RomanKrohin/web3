@@ -39,4 +39,8 @@ public class ResultsBean {
         }
         return false;
     }
+
+    public Result getNewResult(){
+        return this.newResult;
+    }
 }
