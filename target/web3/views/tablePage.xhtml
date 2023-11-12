@@ -46,7 +46,7 @@
             
             <h:panelGrid columns="1" style="margin-bottom: 10px ">
                 <p:inputText id="y_value" value="#{resultsBean.newResult.y}" onchange="saveYFieldValue(this)"/>
-                <p:slider for="y_value" range="false" minValue="-5" maxValue="5" step="1" />
+                <p:slider id ="y_slider" for="y_value" range="false" minValue="-5" maxValue="5" step="1"/>
             </h:panelGrid>
 
 
@@ -64,6 +64,7 @@
 
             <h:selectOneMenu id="r_value" value="#{resultsBean.newResult.r}"
                 onchange="handleSelectOneMenuChange(this)">
+                <f:selectItem itemLabel="None" itemValue="null" />
                 <f:selectItem itemLabel="1" itemValue="1" />
                 <f:selectItem itemLabel="2" itemValue="2" />
                 <f:selectItem itemLabel="3" itemValue="3" />
@@ -104,6 +105,15 @@
                     if (savedRField) {
                         selectMenu.value = parseInt(savedRField);
                     }
+
+                    document.getElementById('data-dynamic-rx').textContent = +savedRField/2;
+                    document.getElementById('data-dynamic-rxx').textContent = +savedRField;
+                    document.getElementById('data-dynamic-r-x').textContent = -savedRField/2;
+                    document.getElementById('data-dynamic-r-xx').textContent = -savedRField;
+                    document.getElementById('data-dynamic-ry').textContent = +savedRField/2;
+                    document.getElementById('data-dynamic-ryy').textContent = +savedRField;
+                    document.getElementById('data-dynamic-r-y').textContent = -savedRField/2;
+                    document.getElementById('data-dynamic-r-yy').textContent = -savedRField;
 
                     loadPointsFromLocalStorage();
             }
@@ -191,44 +201,52 @@
             <text fill="black"
                 x="245"
                 y="190"
+                id = "data-dynamic-rx"
             >
             </text>
             <text fill="black"
                 x="298"
                 y="190"
+                id="data-dynamic-rxx"
             >
             </text>
 
             <text fill="black"
                 x="90"
                 y="190"
+                id = "data-dynamic-r-xx"
             >
             </text>
             <text fill="black"
                 x="140"
                 y="190"
+                id = "data-dynamic-r-x"
             >
             </text>
 
             <text fill="black"
                 x="210"
                 y="155"
+                id = "data-dynamic-ry"
             >
             </text>
             <text fill="black"
                 x="210"
                 y="105"
+                id = "data-dynamic-ryy"
             >
             </text>
 
             <text fill="black"
                 x="210"
                 y="255"
+                id = "data-dynamic-r-y"
             >
             </text>
             <text fill="black"
                 x="210"
                 y="305"
+                id="data-dynamic-r-yy"
             >
             </text>
             <polygon points="360,200 350,195 350,205" fill="black" />
@@ -268,6 +286,15 @@
             function handleSelectOneMenuChange(selectOneMenu) {
                 R = parseInt(selectOneMenu.value);
                 sessionStorage.setItem('R_field', R);
+
+                document.getElementById('data-dynamic-rx').textContent = +R/2;
+                document.getElementById('data-dynamic-rxx').textContent = +R;
+                document.getElementById('data-dynamic-r-x').textContent = -R/2;
+                document.getElementById('data-dynamic-r-xx').textContent = -R;
+                document.getElementById('data-dynamic-ry').textContent = +R/2;
+                document.getElementById('data-dynamic-ryy').textContent = +R;
+                document.getElementById('data-dynamic-r-y').textContent = -R/2;
+                document.getElementById('data-dynamic-r-yy').textContent = -R;
 
                 const pointsSVG = document.querySelectorAll('#svg circle');
                 pointsSVG.forEach(function(point) {
@@ -327,7 +354,7 @@
                 point.setAttribute('cy', y);
                 point.setAttribute('r', 3);
                 point.setAttribute('fill', 'red');
-                if (areaCheck(x, y, RValue)){
+                if (areaCheck(((x - 400) / (100 / RValue) + (2 * RValue)).toFixed(2), ((400 - y) / (100 / RValue) - (2 * RValue)).toFixed(2), RValue)){
                     point.setAttribute('fill', 'green');
                 }
                 svg.appendChild(point);
@@ -381,7 +408,6 @@
                             if (areaCheck(parseFloat(x[i]), parseFloat(y[i]), RValue)){
                                 point.setAttribute('fill', 'green');
                             }
-                            point.setAttribute('fill', 'red');
                             svg.appendChild(point);
                             points.push(point);
                         }
