@@ -41,22 +41,22 @@
     <h:form id="addNewResultForm">
         <p:growl id="growl" showDetail="true"/>
         <div>
-            <h:inputText id="x_value" value="#{resultsBean.newResult.x}" onchange="saveXFieldValue()"/>
+            <h:inputText id="x_value" value="#{resultsBean.newResult.x}" onchange="saveXFieldValue(this)"/>
             
             
             <h:panelGrid columns="1" style="margin-bottom: 10px ">
-                <p:inputText id="y_value" value="#{resultsBean.newResult.y}" onchange="saveYFieldValue()"/>
+                <p:inputText id="y_value" value="#{resultsBean.newResult.y}" onchange="saveYFieldValue(this)"/>
                 <p:slider for="y_value" range="false" minValue="-5" maxValue="5" step="1" />
             </h:panelGrid>
 
 
             <script>
-                function saveXFieldValue() {
-                    let fieldXValue = document.getElementById("addNewResultForm:x_value").value;
+                function saveXFieldValue(inputText) {
+                    let fieldXValue = inputText.value;
                     sessionStorage.setItem("x_field", fieldXValue);
                 }
-                function saveYFieldValue() {
-                    let fieldYValue = document.getElementById("addNewResultForm:y_value").value;
+                function saveYFieldValue(inputText) {
+                    let fieldYValue = inputText.value;
                     sessionStorage.setItem("y_field", fieldYValue);
                 }
             </script>
@@ -70,14 +70,6 @@
                 <f:selectItem itemLabel="4" itemValue="4" />
                 <f:selectItem itemLabel="5" itemValue="5" />
             </h:selectOneMenu>
-            <script>
-                let R;
-
-                function handleSelectOneMenuChange(selectOneMenu) {
-                    R = selectOneMenu.value;
-                    sessionStorage.setItem('R_field', R);
-                }
-            </script>
         </div>
 
         <h:commandButton id="submitFields" onclick="handleButtonClick()" value="Send" action="#{resultsBean.addNewReult()}" style="background-color: #000000;
@@ -271,6 +263,38 @@
             const svg = document.getElementById('svg');
             const form = document.getElementById('addNewResultForm');
             let points = [];
+            let R;
+
+            function handleSelectOneMenuChange(selectOneMenu) {
+                R = parseInt(selectOneMenu.value);
+                sessionStorage.setItem('R_field', R);
+
+                const pointsSVG = document.querySelectorAll('#svg circle');
+                pointsSVG.forEach(function(point) {
+                    point.parentNode.removeChild(point);
+                });
+                const savedData = sessionStorage.getItem('graphData');
+                if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                const { x, y } = parsedData;
+                points=[];
+                for (let i = 0; i &lt; x.length; i++) {
+                    const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    console.log(R);
+                    console.log(((parseFloat(x[i]) - 2 * R) * (100 / R) + 400).toFixed(0));
+                    console.log((200 - (100 / R) * (parseFloat(y[i]))).toFixed(0));
+                    point.setAttribute('cx', ((parseFloat(x[i]) - 2 * R) * (100 / R) + 400).toFixed(0));
+                    point.setAttribute('cy', (200 - (100 / R) * (parseFloat(y[i]))).toFixed(0));
+                    point.setAttribute('r', 3);
+                    point.setAttribute('fill', 'red');
+                    if (areaCheck(parseFloat(x[i]), parseFloat(y[i]), R)){
+                        point.setAttribute('fill', 'green');
+                    }
+                    svg.appendChild(point);
+                    points.push(point);
+                }
+                }
+            }
 
             function handleButtonClick(){
                 const x = sessionStorage.getItem('x_field');
@@ -282,6 +306,9 @@
                 point.setAttribute('cy', (200 - (100 / R) * (y)).toFixed(0));
                 point.setAttribute('r', 3);
                 point.setAttribute('fill', 'red');
+                if (areaCheck(x, y, R)){
+                    point.setAttribute('fill', 'green');
+                }
                 svg.appendChild(point);
                 points.push(point);
 
@@ -300,6 +327,9 @@
                 point.setAttribute('cy', y);
                 point.setAttribute('r', 3);
                 point.setAttribute('fill', 'red');
+                if (areaCheck(x, y, RValue)){
+                    point.setAttribute('fill', 'green');
+                }
                 svg.appendChild(point);
                 points.push(point);
                 savePointsToSessionStorage(points);
@@ -348,11 +378,28 @@
                             point.setAttribute('cy', (200 - (100 / RValue) * (parseFloat(y[i]))).toFixed(0));
                             point.setAttribute('r', 3);
                             point.setAttribute('fill', 'red');
+                            if (areaCheck(parseFloat(x[i]), parseFloat(y[i]), RValue)){
+                                point.setAttribute('fill', 'green');
+                            }
+                            point.setAttribute('fill', 'red');
                             svg.appendChild(point);
                             points.push(point);
                         }
                     }
                 }
+            }
+
+            function areaCheck(x, y, r){
+                if (x >= 0 &amp;&amp; y >= 0 &amp;&amp; x &lt;= r&#47;2 &amp;&amp; y &lt;= r){
+                    return true;
+                }
+                if (x &lt;= 0 &amp;&amp; y &lt;= 0 &amp;&amp; x &gt;= -r &amp;&amp; y &gt;= x-r){
+                    return true;
+                }
+                if (x &lt;= 0 &amp;&amp; y &gt;= 0 &amp;&amp; Math.sqrt(x*x+y*y) &lt;= r){
+                    return true;
+                }
+                return false;
             }
         </script>
     </h:form>
