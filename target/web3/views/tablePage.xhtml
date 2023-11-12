@@ -41,13 +41,25 @@
     <h:form id="addNewResultForm">
         <p:growl id="growl" showDetail="true"/>
         <div>
-            <h:inputText id="x_value" value="#{resultsBean.newResult.x}"/>
+            <h:inputText id="x_value" value="#{resultsBean.newResult.x}" onchange="saveXFieldValue()"/>
             
             
             <h:panelGrid columns="1" style="margin-bottom: 10px ">
-                <p:inputText id="y_value" value="#{resultsBean.newResult.y}"/>
+                <p:inputText id="y_value" value="#{resultsBean.newResult.y}" onchange="saveYFieldValue()"/>
                 <p:slider for="y_value" range="false" minValue="-5" maxValue="5" step="1" />
             </h:panelGrid>
+
+
+            <script>
+                function saveXFieldValue() {
+                    let fieldXValue = document.getElementById("addNewResultForm:x_value").value;
+                    sessionStorage.setItem("x_field", fieldXValue);
+                }
+                function saveYFieldValue() {
+                    let fieldYValue = document.getElementById("addNewResultForm:y_value").value;
+                    sessionStorage.setItem("y_field", fieldYValue);
+                }
+            </script>
 
 
             <h:selectOneMenu id="r_value" value="#{resultsBean.newResult.r}"
@@ -59,15 +71,16 @@
                 <f:selectItem itemLabel="5" itemValue="5" />
             </h:selectOneMenu>
             <script>
-                let R =0;
+                let R;
 
                 function handleSelectOneMenuChange(selectOneMenu) {
                     R = selectOneMenu.value;
+                    sessionStorage.setItem('R_field', R);
                 }
             </script>
         </div>
 
-        <h:commandButton value="Send" action="#{resultsBean.addNewReult()}" style="background-color: #000000;
+        <h:commandButton id="submitFields" value="Send" action="#{resultsBean.addNewReult()}" style="background-color: #000000;
             color: #ffffff;
             padding: 10px 20px;
             border: none;
@@ -75,6 +88,32 @@
             font-size: 16px;">
             <f:ajax execute="addNewResultForm" render="resultsTable" />
         </h:commandButton>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            let xInput = document.getElementById("addNewResultForm:x_value");
+            let yInput = document.getElementById("addNewResultForm:y_value");
+
+            window.addEventListener('load', restoreFieldValues());
+
+            function restoreFieldValues() {
+                    let selectMenu = document.getElementById("addNewResultForm:r_value");
+                    const savedXField = sessionStorage.getItem('x_field');
+                    const savedYField = sessionStorage.getItem('y_field');
+                    const savedRField = sessionStorage.getItem('R_field');
+                    if (savedXField) {
+                        xInput.value = parseFloat(savedXField).toFixed(2);
+                    }
+                
+                    if (savedYField) {
+                        yInput.value = parseFloat(savedYField).toFixed(2);
+                    }
+                    if (savedRField) {
+                        selectMenu.value = parseInt(savedRField);
+                    }
+            }
+        });
+        </script>
 
         <h:commandButton value="Return" action="mainPage" style="background-color: #000000;
         color: #ffffff;
@@ -229,8 +268,7 @@
             document.addEventListener("DOMContentLoaded", function() {
             const svg = document.getElementById('svg');
             const form = document.getElementById('addNewResultForm');
-            let xInput = document.getElementById("addNewResultForm:x_value");
-            let yInput = document.getElementById("addNewResultForm:y_value");
+            let points = [];
 
             svg.addEventListener("click", addPoint);
 
@@ -238,7 +276,7 @@
                 const rect = svg.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-
+                let RValue = parseInt(sessionStorage.getItem('R_field'));
                 const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 point.setAttribute('cx', x);
                 point.setAttribute('cy', y);
@@ -246,10 +284,14 @@
                 point.setAttribute('fill', 'red');
                 svg.appendChild(point);
 
-                xInput.value = ((x - 400) / (100 / R) + (2 * R)).toFixed(2);
-                yInput.value = ((400 - y) / (100 / R) - (2 * R)).toFixed(2);
+                let xInput = document.getElementById("addNewResultForm:x_value");
+                let yInput = document.getElementById("addNewResultForm:y_value");
+                xInput.value = ((x - 400) / (100 / RValue) + (2 * RValue)).toFixed(2);
+                yInput.value = ((400 - RValue) / (100 / R) - (2 * RValue)).toFixed(2);
+                sessionStorage.setItem("x_field", xInput.value);
+                sessionStorage.setItem("y_field", yInput.value);
 
-                const url = '/web3/controller?' + 'x=' + encodeURIComponent(xInput.value) + '&amp;y=' + encodeURIComponent(yInput.value) + '&amp;R=' + encodeURIComponent(R);
+                const url = '/web3/controller?' + 'x=' + encodeURIComponent(xInput.value) + '&amp;y=' + encodeURIComponent(yInput.value) + '&amp;R=' + encodeURIComponent(RValue);
   
                 const xhr = new XMLHttpRequest();
                 xhr.onload = function () {
@@ -259,9 +301,27 @@
                 };
                 xhr.open('GET', url, true);
                 xhr.send();
-
+                points.push(point)
             }
             });
+
+            function savePointsToLocalStorage() {
+                let RValue = parseInt(sessionStorage.getItem('R_field'));
+                const savedData = {
+                x: points.map(function(point) {
+                    return parseFloat(((point.getAttribute('cx') - 400) / (100 / RValue) + (2 * RValue)).toFixed(2));
+                }),
+                y: points.map(function(point) {
+                    return parseFloat(((400 - point.getAttribute('cy')) / (100 / RValue) - (2 * RValue)).toFixed(2));
+                })
+                };
+                sessionStorage.setItem('graphData', JSON.stringify(savedData));
+            }
+
+            function loadPointsFromLocalStorage() {
+            }
+
+            loadPointsFromLocalStorage();
         </script>
     </h:form>
     <div>
