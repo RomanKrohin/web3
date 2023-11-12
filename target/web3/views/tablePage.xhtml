@@ -80,7 +80,7 @@
             </script>
         </div>
 
-        <h:commandButton id="submitFields" value="Send" action="#{resultsBean.addNewReult()}" style="background-color: #000000;
+        <h:commandButton id="submitFields" onclick="handleButtonClick()" value="Send" action="#{resultsBean.addNewReult()}" style="background-color: #000000;
             color: #ffffff;
             padding: 10px 20px;
             border: none;
@@ -90,6 +90,7 @@
         </h:commandButton>
 
         <script>
+
             document.addEventListener("DOMContentLoaded", function() {
             let xInput = document.getElementById("addNewResultForm:x_value");
             let yInput = document.getElementById("addNewResultForm:y_value");
@@ -270,6 +271,22 @@
             const svg = document.getElementById('svg');
             const form = document.getElementById('addNewResultForm');
             let points = [];
+
+            function handleButtonClick(){
+                const x = sessionStorage.getItem('x_field');
+                const y = sessionStorage.getItem('y_field');
+                const R = sessionStorage.getItem('R_field');
+
+                const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                point.setAttribute('cx', ((x - 2 * R) * (100 / R) + 400).toFixed(0));
+                point.setAttribute('cy', (200 - (100 / R) * (y)).toFixed(0));
+                point.setAttribute('r', 3);
+                point.setAttribute('fill', 'red');
+                svg.appendChild(point);
+                points.push(point);
+
+                savePointsToSessionStorage(points);
+            }
 
             svg.addEventListener("click", addPoint);
 
