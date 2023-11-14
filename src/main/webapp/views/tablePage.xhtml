@@ -41,6 +41,8 @@
     <h:form id="addNewResultForm">
         <p:growl id="growl" showDetail="true"/>
         <div>
+            <p:remoteCommand name="remoteCommand" action="#{resultsBean.addNewReult()}" update="resultsTable"/>
+
             <h:inputText id="x_value" value="#{resultsBean.newResult.x}" onchange="saveXFieldValue(this)"/>
             
             
@@ -367,16 +369,11 @@
                 sessionStorage.setItem("x_field", xInput.value);
                 sessionStorage.setItem("y_field", yInput.value);
 
-                const url = '/web3/controller?' + 'x=' + encodeURIComponent(xInput.value) + '&amp;y=' + encodeURIComponent(yInput.value) + '&amp;R=' + encodeURIComponent(RValue);
-  
-                const xhr = new XMLHttpRequest();
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        window.location.href='tablePage.xhtml';
-                    }
-                };
-                xhr.open('GET', url, true);
-                xhr.send();
+                callRemoteCommand();
+            }
+
+            function callRemoteCommand(){
+                remoteCommand();
             }
 
             function savePointsToSessionStorage(points) {

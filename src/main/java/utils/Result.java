@@ -1,14 +1,34 @@
 package utils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Data;
 
 @Data
+@Entity
+@Table(name = "roman_schema.results")
 public class Result {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name ="x")
     private String x;
+    @Column(name ="y")
     private String y;
+    @Column(name ="z")
     private String r;
+    @Column(name ="value")
     private String value;
+    @Column(name ="exec_time")
     private String execTime;
+    @Column(name ="time")
     private String time;
     
     public Result(String x, String y, String r, String value, String execTime, String time) {
