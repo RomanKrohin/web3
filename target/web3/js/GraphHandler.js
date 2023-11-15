@@ -1,5 +1,6 @@
 
 const svg = document.getElementById('svg');
+const error = document.getElementById('error_div');
 const form = document.getElementById('addNewResultForm');
 let points = [];
 let R;
@@ -45,6 +46,7 @@ function handleSelectOneMenuChange(selectOneMenu) {
 }
 
 function handleButtonClick(){
+    error.innerHTML = '';
     const x = sessionStorage.getItem('x_field');
     const y = sessionStorage.getItem('y_field');
     const R = sessionStorage.getItem('R_field');
@@ -61,11 +63,16 @@ function handleButtonClick(){
     points.push(point);
 
     savePointsToSessionStorage(points);
+
+    if (validation(parseFloat(x), parseFloat(y))){
+        remoteCommand();
+    }
 }
 
 svg.addEventListener("click", addPoint);
 
 function addPoint(e) {
+    error.innerHTML = '';
     const rect = svg.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -142,4 +149,24 @@ function areaCheck(x, y, r){
         return true;
     }
     return false;
+}
+
+function validation(x, y){
+    if (!(x>-3)){
+        error.textContent = "x need be >-3";
+        return false;
+    }
+    if (!(y>-5)){
+        error.textContent = "y need be >-5";
+        return false;
+    }
+    if (!(x<5)){
+        error.textContent = "x need be <5";
+        return false;
+    }
+    if (!(y<5)){
+        error.textContent = "y need be <5";
+        return false;
+    }
+    return true;
 }
