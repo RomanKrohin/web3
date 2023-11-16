@@ -5,5 +5,6 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">MtCI_0609</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="show_sql">true</property>
     </session-factory>
 </hibernate-configuration>
