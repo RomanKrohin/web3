@@ -1,0 +1,193 @@
+html, body {
+    background-color: #ffffff;
+    color: #000000;
+    text-align: left;
+}
+
+#graph {
+    margin-top: 30px;
+}
+
+#graph svg {
+    margin-top: 20px;
+    border: 1px solid black;
+}
+
+#graph .no-select {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#addNewResultForm {
+    margin-top: 40px;
+}
+
+.ui-inputgroup {
+    display: flex;
+    align-items: center;
+}
+
+.ui-inputgroup .ui-selectonemenu,
+.ui-inputgroup .ui-inputtext,
+.ui-inputgroup .ui-slider {
+    margin-right: 10px;
+}
+
+.ui-inputgroup .ui-inputtext,
+.ui-inputgroup .ui-slider {
+    flex: 1;
+}
+
+#submitFields {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+#submitFields:hover {
+    background-color: #333333;
+    cursor: pointer;
+}
+
+#resultsTable {
+    margin-top: 20px;
+}
+
+#resultsTable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#resultsTable th,
+#resultsTable td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+}
+
+#resultsTable th {
+    background-color: #f2f2f2;
+}
+
+#resultsTable tr:hover {
+    background-color: #f5f5f5;
+}
+
+#error_div {
+    color: red;
+    margin-top: 10px;
+}
+
+.ui-inputgroup select {
+    /* Изменение фона */
+    background-color: #ffffff;
+    /* Изменение цвета текста */
+    color: #000000;
+    /* Изменение границы */
+    border: 1px solid #000000;
+    /* Изменение размера шрифта */
+    font-size: 16px;
+    /* Изменение отступов */
+    padding: 5px;
+    /* Изменение высоты */
+    height: 30px;
+    /* Изменение ширины */
+    width: 200px;
+  }
+  
+  .ui-inputgroup select:hover {
+    /* Изменение стиля при наведении курсора */
+    background-color: #f0f0f0;
+  }
+  
+  .ui-inputgroup select:focus {
+    /* Изменение стиля при фокусе */
+    border-color: #999999;
+    box-shadow: 0 0 5px #999999;
+    outline: none;
+  }
+  .resTable {   
+    border-collapse:collapse;
+    border:1px solid #000000;
+ }
+ 
+ .resTableHeader {
+    text-align:center;
+    background:none repeat scroll 0 0 #B5B5B5;
+    border-bottom:1px solid #000000;  
+    padding:2px;
+ }
+ 
+ .resTableOddRow {
+    text-align:center;
+    background:none repeat scroll 0 0 #FFFFFFF;	
+ } 
+ .resTableEvenRow {
+    text-align:center;
+    background:none repeat scroll 0 0 #D3D3D3;
+ }
+  
+ html, body {
+    background-color: #ffffff;
+    color: #000000;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 100vh;
+    padding-bottom: 40px; /* Отступы внизу */
+    margin-top: 40px;
+  }
+  
+  #addNewResultForm {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+
+#addNewResultForm {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#addNewResultForm input,
+#addNewResultForm select,
+#addNewResultForm button {
+    margin: 10px 0;
+    width: 200px;
+}
+
+#addNewResultForm button {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#graph {
+    margin-top: 30px;
+}
+
+.resTable {
+    width: 100%;
+}
+
+  
+  
+  
