@@ -1,3 +1,4 @@
 utils/Result.class
 workmodules/DatabaseHandler.class
 utils/ResultsBean.class
+validator/Validator.class
