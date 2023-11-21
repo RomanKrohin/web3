@@ -40,5 +40,16 @@ public class DatabaseHandler {
         session.persist(result);
         session.getTransaction().commit();
     }
+
+    public void clear(){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        String hql = "delete from Result";
+        Query q = session.createQuery(hql);
+        q.executeUpdate();
+
+        session.getTransaction().commit();
+    }
     
 }

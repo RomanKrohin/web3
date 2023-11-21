@@ -111,6 +111,15 @@
             border-radius: 5px;
             font-size: 16px;"/>
 
+            <h:commandButton id="clearTable" value="Clear" action="#{resultsBean.clearCollection()}" style="background-color: #000000;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;">
+            <f:ajax render="resultsTable" />
+            </h:commandButton>
+
             <div id="graph">
                 <svg
                 height="400"
@@ -270,7 +279,9 @@
                 <h:dataTable value="#{resultsBean.results}" var="result"
                 styleClass = "resTable"
                 headerClass = "resTableHeader"
-                rowClasses = "resTableOddRow,resTableEvenRow">
+                rowClasses = "resTableOddRow,resTableEvenRow"
+                first="#{resultsBean.firstResultIndex}"
+                rows="10">
                     <h:column>
                         <f:facet name="header">X</f:facet>
                         #{result.x}
@@ -302,6 +313,26 @@
                     </h:column>
                 </h:dataTable>
             </h:panelGroup>
+
+            <h:commandButton value="Next" action="#{resultsBean.nextPage()}" 
+                style="background-color: #000000;
+                color: #ffffff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;">
+                <f:ajax render="resultsTable" />
+            </h:commandButton>
+
+            <h:commandButton value="Previos" action="#{resultsBean.previosPage()}" 
+                style="background-color: #000000;
+                color: #ffffff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;">
+                <f:ajax render="resultsTable" />
+            </h:commandButton>
         </div>
     </div>
 </div>
