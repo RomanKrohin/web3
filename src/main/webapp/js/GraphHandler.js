@@ -51,22 +51,22 @@ function handleButtonClick(){
     const y = sessionStorage.getItem('y_field');
     const R = sessionStorage.getItem('R_field');
 
-    const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    point.setAttribute('cx', ((x - 2 * R) * (100 / R) + 400).toFixed(0));
-    point.setAttribute('cy', (200 - (100 / R) * (y)).toFixed(0));
-    point.setAttribute('r', 3);
-    point.setAttribute('fill', 'red');
-    if (areaCheck(x, y, R)){
-        point.setAttribute('fill', 'green');
-    }
-    svg.appendChild(point);
-    points.push(point);
+    if (validation(x, y)){
+        const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        point.setAttribute('cx', ((x - 2 * R) * (100 / R) + 400).toFixed(0));
+        point.setAttribute('cy', (200 - (100 / R) * (y)).toFixed(0));
+        point.setAttribute('r', 3);
+        point.setAttribute('fill', 'red');
+        if (areaCheck(x, y, R)){
+            point.setAttribute('fill', 'green');
+        }
+        svg.appendChild(point);
+        points.push(point);
 
-    savePointsToSessionStorage(points);
-
-    if (validation(parseFloat(x), parseFloat(y))){
+        savePointsToSessionStorage(points);
         remoteCommand();
     }
+
 }
 
 svg.addEventListener("click", addPoint);
@@ -152,6 +152,12 @@ function areaCheck(x, y, r){
 }
 
 function validation(x, y){
+    console.log(isNaN(x));
+    console.log(x);
+    if (isNaN(x)) {
+        error.textContent = "Plese enter a numeric x";
+        return false;
+      }
     if (!(x>-3)){
         error.textContent = "x need be >-3";
         return false;
